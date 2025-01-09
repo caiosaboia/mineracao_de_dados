@@ -1,83 +1,113 @@
 --- 
-title: "Atividade 1"
-author: "Caio R. Saboia Monteiro" #if necessary
-# date: "dd/mm/aaaa" #if necessary
-format:
-  html:
-    toc: true
-    number-sections: true
-    # toc-location: right-body
-    code-fold: false
-    # css: styles.css #if necessary
-execute:
-  cache: true
-  enabled: true
-  freeze: true #can be use 'false' or auto
-  # daemon: false #default is 300, but can use boleean values too 
+  title: "Atividade 1"
+  author: "Caio R. Saboia Monteiro" #if necessary
+  # date: "dd/mm/aaaa" #if necessary
+  format:
+    pdf:
+      number-sections: true
+      keep-tex: true
+    html:
+      toc: false
+      number-sections: true
+      # toc-location: right-body
+      code-fold: false
+      # css: styles.css #if necessary
+      math: mathjax
 
-#python
-jupyter: python3 #can be use for Julia too
-  # or can be use something like this:
-  # kernelspec:
-  #   name: "xpython"
-  #   language: "python"
-  #   display_name: "Python 3.7 (XPython)"
+  latex-engine: xelatex
 
-#R
-# knitr:
-#   opts_chunk:
-#     collapse: true
-#     comment: "#>"
-#     R.options:
-#       knitr.graphics.auto_pdf: true
+  header-includes:
+    - \usepackage{amsmath}
+    - \usepackage{amsfonts}
+    - \usepackage{amssymb}
 
-# engine: julia # for more aplicatoins use quarto.org or :QuartoHelp Julia
+  execute:
+    echo: true
+    cache: true
+    enabled: true
+    freeze: true #can be use 'false' or auto
+    # daemon: false #default is 300, but can use boleean values too 
+
+  #python
+  jupyter: python3 #can be use for Julia too
+    # or can be use something like this:
+    # kernelspec:
+    #   name: "xpython"
+    #   language: "python"
+    #   display_name: "Python 3.7 (XPython)"
+
+  #R
+  # knitr:
+  #   opts_chunk:
+  #     collapse: true
+  #     comment: "#>"
+  #     R.options:
+  #       knitr.graphics.auto_pdf: true
+
+  # engine: julia # for more aplicatoins use quarto.org or :QuartoHelp Julia
 ---
 
 # Trabalho de Mineração de Dados
 
-## Primeira parte
+## Primeira Parte
 
-**1. O que é uma transformação de atributo? Cite um exemplo de como isto pode ajudar os métodos de aprendizado.**
+  **1. O que é uma transformação de atributo? Cite um exemplo de como isto pode ajudar os métodos de aprendizado.**
 
-Uma transformação de atributo altera as características de uma variável para melhorar a representação dos dados, como normalizar valores para evitar que atributos de escalas diferentes dominem o aprendizado.
+  Uma transformação de atributo altera as características de uma variável para melhorar a representação dos dados, como normalizar valores para evitar que atributos de escalas diferentes dominem o aprendizado.
 
-**2. Por que gráficos de dispersão dos dados são interessantes de serem observados antes de fazer o aprendizado supervisionado?**
+  **2. Por que gráficos de dispersão dos dados são interessantes de serem observados antes de fazer o aprendizado supervisionado?**
 
-Eles ajudam a visualizar padrões, tendências, outliers e relações entre variáveis, o que pode influenciar escolhas de modelos ou preprocessamento.
+  Eles ajudam a visualizar padrões, tendências, outliers e relações entre variáveis, o que pode influenciar escolhas de modelos ou preprocessamento.
 
-**3. Qual é o motivo pelo qual os dados podem não ser IID (independentes e identicamente distribuídos) no exemplo de filtragem de spam de e-mail da aula?**
+  **3. Qual é o motivo pelo qual os dados podem não ser IID (independentes e identicamente distribuídos) no exemplo de filtragem de spam de e-mail da aula?**
 
-Se fosse o caso, não poderiamos ter o aprendizado de fato. Já que todo email(originalmente) é diferente do outro, tornando-os únicos.
+  Se fosse o caso, não poderiamos ter o aprendizado de fato. Já que todo email(originalmente) é diferente do outro, tornando-os únicos.
 
-**4. Qual é a diferença entre um conjunto de validação e um conjunto de teste?**
+  **4. Qual é a diferença entre um conjunto de validação e um conjunto de teste?**
 
-O conjunto de validação é usado para ajustar hiperparâmetros, enquanto o conjunto de teste avalia o desempenho final do modelo.
+  O conjunto de validação é usado para ajustar hiperparâmetros, enquanto o conjunto de teste avalia o desempenho final do modelo.
 
-**5. Por que não podemos (normalmente) usar o erro de treinamento para selecionar um hiperparâmetro?**
+  **5. Por que não podemos (normalmente) usar o erro de treinamento para selecionar um hiperparâmetro?**
 
-Porque o erro de treinamento tende a ser otimista, não refletindo o desempenho real do modelo em dados não vistos.
+  Porque o erro de treinamento tende a ser otimista, não refletindo o desempenho real do modelo em dados não vistos.
 
-**6. Naïve Bayes faz a suposição de que todos os recursos são condicionalmente independentes, dado o rótulo da classe. Por que essa suposição é necessária e o que aconteceria sem ela?**
+  **6. Naïve Bayes faz a suposição de que todos os recursos são condicionalmente independentes, dado o rótulo da classe. Por que essa suposição é necessária e o que aconteceria sem ela?**
 
-A suposição simplifica o cálculo das probabilidades; sem ela, seria necessário estimar distribuições conjuntas complexas, o que pode ser inviável.
+  A suposição simplifica o cálculo das probabilidades; sem ela, seria necessário estimar distribuições conjuntas complexas, o que pode ser inviável.
 
-**Por que o KNN é considerado um método não paramétrico e quais são as consequências indesejáveis do design não paramétrico do KNN?**
+  **7. Por que o KNN é considerado um método não paramétrico e quais são as consequências indesejáveis do design não paramétrico do KNN?**
 
-Ele não assume uma forma específica para a função subjacente, mas requer grande armazenamento e é lento em grandes conjuntos de dados devido à busca por vizinhos.
+  Ele não assume uma forma específica para a função subjacente, mas requer grande armazenamento e é lento em grandes conjuntos de dados devido à busca por vizinhos.
 
-**Para qualquer modelo paramétrico, como o aumento do número de exemplos de treinamento afeta as duas partes do custo-benefício fundamental?**
+  **8. Para qualquer modelo paramétrico, como o aumento do número de exemplos de treinamento afeta as duas partes do custo-benefício fundamental?**
 
-Reduz o viés, aproximando melhor a função verdadeira, mas pode aumentar os custos computacionais.
+  Reduz o viés, aproximando melhor a função verdadeira, mas pode aumentar os custos computacionais.
 
-**Tanto o aprendizado supervisionado quanto os modelos de agrupamento recebem uma entrada x_i e produzem um rótulo y_i. Qual é a principal diferença?**
+  **9. Tanto o aprendizado supervisionado quanto os modelos de agrupamento recebem uma entrada $\mathbf{x_i}$ e produzem um rótulo $\mathbf{y_i}$. Qual é a principal diferença?**
 
-No aprendizado supervisionado, os rótulos são fornecidos durante o treinamento, enquanto no agrupamento os rótulos são descobertos automaticamente.
+  No aprendizado supervisionado, os rótulos são fornecidos durante o treinamento, enquanto no agrupamento os rótulos são descobertos automaticamente.
 
-**No agrupamento k-means, os clusters são garantidamente regiões convexas. As áreas que recebem o mesmo rótulo por KNN também são convexas?**
+  **10. No agrupamento k-means, os clusters são garantidamente regiões convexas. As áreas que recebem o mesmo rótulo por KNN também são convexas?**
 
-Não, porque o KNN classifica pontos com base nos vizinhos mais próximos, resultando em regiões potencialmente não convexas.
+  Não, porque o KNN classifica pontos com base nos vizinhos mais próximos, resultando em regiões potencialmente não convexas. $\\$
 
+  <!-- \begin{enumerate} -->
+  <!--   \item Primeiro item -->
+  <!--   \item Segundo item -->
+  <!--   \item Terceiro item -->
+  <!-- \end{enumerate} -->
 
+## Segunda Parte
+  Segue um pouco da segunda parte do trabalho, em relação à $\textbf{Fraude de Cartão de Cŕedito}$
+  $\\$ 
+  $\textbf{Fraude de Cartão de Cŕedito}$ 
 
-
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import (roc_auc_score, precision_recall_curve, auc)
+```
