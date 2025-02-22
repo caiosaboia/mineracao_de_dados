@@ -51,12 +51,11 @@ jupyter: python3 #can be use for Julia too
 # engine: julia # for more aplicatoins use quarto.org or :QuartoHelp Julia
 ---
 
-# Aplicando modelos avançados de aprendizado supervisionado
+Aplicando modelos avançados de aprendizado supervisionado
 
 
 # MNIST - Reconhecimento de algarismos escritos a mão
 
-##
 ```{python}
 import tensorflow as tf
 from tensorflow import keras
@@ -64,21 +63,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-# 1. Carregar o conjunto de dados MNIST
 data = keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = data.load_data()
 
-# 2. Normalizar os dados (0-255 -> 0-1)
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
-# 3. Definir a arquitetura da rede neural
 model = keras.Sequential([
-    keras.layers.Flatten(input_shape=(28, 28)),  # Achatar imagens 28x28 para vetor 784
-    keras.layers.Dense(70, activation='relu'),  # Camada oculta com 128 neurônios
-    keras.layers.Dense(10, activation='softmax') # Camada de saída para 10 classes
+    keras.layers.Flatten(input_shape=(28, 28)),  
+    keras.layers.Dense(70, activation='relu'),  
+    keras.layers.Dense(10, activation='softmax') 
 ])
 
-# 4. Compilar o modelo
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
@@ -87,25 +82,19 @@ model.compile(optimizer='adam',
 ```
 
 ```{python}
-# 5. Treinar o modelo
-epochs = 20  # Número de épocas
+epochs = 20  
 history = model.fit(x_train, y_train, epochs=epochs, validation_data=(x_test, y_test))
 
-# 6. Avaliação no conjunto de teste
 loss, accuracy = model.evaluate(x_test, y_test)
 print(f'Perda: {loss:.4f}, Acurácia: {accuracy:.4f}')
 ```
 
-
 ```{python}
-# 7. Exemplo de previsão
 predictions = model.predict(x_test)
 plt.imshow(x_test[0], cmap=plt.cm.binary)
 plt.title(f'Predição: {np.argmax(predictions[0])}')
 plt.show()
 
-# 8. Visualizar erros do modelo
-# 9. Sortear várias imagens aleatórias e verificar as predições
 random_indices = random.sample(range(len(x_test)), 10)
 predictions_list = [np.argmax(predictions[idx]) for idx in random_indices]
 real_values_list = [y_test[idx] for idx in random_indices]
@@ -115,4 +104,92 @@ for i, idx in enumerate(random_indices):
         print(f"acertou")
     else:
         print(f"errou")
+```
+
+# Comentários da Google Store
+
+```{python}
+import pandas as pd
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import RSLPStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+
+df = pd.read_csv('data/googlestore.csv')
+
+print(df.head())
+```
+
+```{python}
+nltk.download('stopwords')
+nltk.download('rslp')
+
+stop_words = stopwords.words('portuguese')
+stemmer = RSLPStemmer()
+
+def preprocess_text(text):
+    if pd.isna(text):
+        return ""
+    text = text.lower()
+    text = re.sub(r'[^a-záéíóúâêîôûãõç\s]', '', text)
+    tokens = text.split()
+    tokens = [stemmer.stem(word) for word in tokens if word not in stop_words]
+    return ' '.join(tokens)
+
+df['clean_text'] = df['content'].apply(preprocess_text)
+
+df = df[df['clean_text'].str.strip() != '']
+```
+
+```{python}
+tfidf = TfidfVectorizer(max_features=5000)
+X = tfidf.fit_transform(df['clean_text']).toarray()
+y = df['sentiment_polarity']
+```
+
+```{python}
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+```
+
+```{python}
+model = LogisticRegression(max_iter=1000, class_weight='balanced')
+model.fit(X_train, y_train)
+```
+
+```{python}
+y_pred = model.predict(X_test)
+
+print("Relatório de Classificação:")
+print(classification_report(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred)
+
+unique_labels = sorted(df['sentiment_polarity'].unique())
+
+plt.figure(figsize=(8, 6))
+plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+plt.title('Matriz de Confusão', fontsize=14)
+plt.colorbar()
+
+tick_marks = np.arange(len(unique_labels))
+plt.xticks(tick_marks, unique_labels, rotation=45)
+plt.yticks(tick_marks, unique_labels)
+
+thresh = cm.max() / 2.0
+for i in range(cm.shape[0]):
+    for j in range(cm.shape[1]):
+        plt.text(j, i, format(cm[i, j], 'd'),
+                 ha="center", va="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+plt.ylabel('Rótulo Verdadeiro', fontsize=12)
+plt.xlabel('Previsão do Modelo', fontsize=12)
+plt.tight_layout()
+plt.show()
 ```
