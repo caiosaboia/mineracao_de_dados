@@ -17,7 +17,7 @@ format:
     toc: true
     keep_tex: true
 
-latex-engine: xelatex
+# latex-engine: xelatex
 
 # header-includes:
 #   - \usepackage{amsmath}
