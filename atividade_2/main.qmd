@@ -19,11 +19,11 @@ format:
 
 latex-engine: xelatex
 
-header-includes:
-  - \usepackage{amsmath}
-  - \usepackage{amsfonts}
-  - \usepackage{amssymb}
-  - \usepackage{listings}
+# header-includes:
+#   - \usepackage{amsmath}
+#   - \usepackage{amsfonts}
+#   - \usepackage{amssymb}
+#   - \usepackage{listings}
 
 execute:
   cache: true
